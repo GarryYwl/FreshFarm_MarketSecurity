@@ -1,0 +1,55 @@
+﻿@page
+@model FreshFarmMarketSecurity.Pages.Account.LoginModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h2>Login</h2>
+
+<form method="post">
+    <div>
+        <label asp-for="Input.Email"></label>
+        <input asp-for="Input.Email" />
+        <span asp-validation-for="Input.Email"></span>
+    </div>
+
+    <div>
+        <label asp-for="Input.Password"></label>
+        <input asp-for="Input.Password" />
+        <span asp-validation-for="Input.Password"></span>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.Message))
+    {
+        <p>@Model.Message</p>
+    }
+
+    <button type="submit">Login</button>
+
+    <input type="hidden" id="RecaptchaToken" name="RecaptchaToken" />
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+        <<script src="https://www.google.com/recaptcha/api.js?render=@Model.ReCaptchaSiteKey"></script>
+
+    <script>
+        (function () {
+            const form = document.querySelector("form");
+            if (!form) return;
+
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+
+                grecaptcha.ready(function () {
+                    grecaptcha.execute("@Model.ReCaptchaSiteKey", { action: "login" })
+                        .then(function (token) {
+                            document.getElementById("RecaptchaToken").value = token;
+                            form.submit();
+                        });
+                });
+            });
+        })();
+    </script>
+}

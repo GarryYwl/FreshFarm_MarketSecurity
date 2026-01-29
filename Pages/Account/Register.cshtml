@@ -1,0 +1,108 @@
+﻿@page
+@model FreshFarmMarketSecurity.Pages.Account.RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h2>Register</h2>
+
+<form method="post" enctype="multipart/form-data" >
+    <div>
+        <label asp-for="Input.FullName"></label>
+        <input asp-for="Input.FullName" />
+        <span asp-validation-for="Input.FullName"></span>
+    </div>
+
+    <div>
+        <label asp-for="Input.CreditCardNo"></label>
+        <input asp-for="Input.CreditCardNo" />
+        <span asp-validation-for="Input.CreditCardNo"></span>
+    </div>
+
+    <div>
+        <label asp-for="Input.Gender"></label>
+        <select asp-for="Input.Gender">
+            <option value="">-- Select --</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Prefer not to say</option>
+        </select>
+        <span asp-validation-for="Input.Gender"></span>
+    </div>
+
+    <div>
+        <label asp-for="Input.MobileNo"></label>
+        <input asp-for="Input.MobileNo" />
+        <span asp-validation-for="Input.MobileNo"></span>
+    </div>
+
+    <div>
+        <label asp-for="Input.DeliveryAddress"></label>
+        <input asp-for="Input.DeliveryAddress" />
+        <span asp-validation-for="Input.DeliveryAddress"></span>
+    </div>
+
+    <div>
+        <label asp-for="Input.Email"></label>
+        <input asp-for="Input.Email" />
+        <span asp-validation-for="Input.Email"></span>
+    </div>
+
+    <div>
+        <label asp-for="Input.Password"></label>
+        <input asp-for="Input.Password" />
+        <span asp-validation-for="Input.Password"></span>
+    </div>
+
+    <div>
+        <label asp-for="Input.ConfirmPassword"></label>
+        <input asp-for="Input.ConfirmPassword" />
+        <span asp-validation-for="Input.ConfirmPassword"></span>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.PasswordFeedback))
+    {
+        <p>@Model.PasswordFeedback</p>
+    }
+
+    <div>
+        <label asp-for="Input.Photo"></label>
+        <input asp-for="Input.Photo" type="file" accept=".jpg,.jpeg" />
+        <span asp-validation-for="Input.Photo"></span>
+    </div>
+
+    <div>
+        <label asp-for="Input.AboutMe"></label>
+        <textarea asp-for="Input.AboutMe"></textarea>
+        <span asp-validation-for="Input.AboutMe"></span>
+    </div>
+
+    <button type="submit">Register</button>
+
+    <input type="hidden" id="RecaptchaToken" name="RecaptchaToken" />
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script src="https://www.google.com/recaptcha/api.js?render=@Model.ReCaptchaSiteKey"></script>
+
+    <script>
+        (function () {
+            const form = document.querySelector("form");
+            if (!form) return;
+
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+
+                grecaptcha.ready(function () {
+                     grecaptcha.execute("@Model.ReCaptchaSiteKey", { action: "register" })                        
+                     .then(function (token) {
+                            document.getElementById("RecaptchaToken").value = token;
+                            form.submit();
+                        });
+                });
+            });
+        })();
+    </script>
+}

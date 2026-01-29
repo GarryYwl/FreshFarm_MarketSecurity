@@ -1,0 +1,28 @@
+﻿@page
+@model FreshFarmMarketSecurity.Pages.Home.IndexModel
+@{
+    ViewData["Title"] = "Home";
+}
+
+<h2>Fresh Farm Market - Member Profile</h2>
+
+<div style="margin-top: 16px;">
+    <p><b>Full Name:</b> @Model.FullName</p>
+    <p><b>Email:</b> @Model.Email</p>
+    <p><b>Gender:</b> @Model.Gender</p>
+    <p><b>Mobile No:</b> @Model.MobileNo</p>
+    <p><b>Delivery Address:</b> @Model.DeliveryAddress</p>
+
+    <p><b>Credit Card (Decrypted):</b> @Model.DecryptedCreditCard</p>
+
+    <p><b>About Me:</b></p>
+    <div style="border:1px solid #ddd; padding:10px; border-radius:6px;">
+        @Model.AboutMe
+    </div>
+
+    <p style="margin-top: 16px;"><b>Photo:</b></p>
+    @if (!string.IsNullOrEmpty(Model.PhotoPath))
+    {
+        <img src="@Model.PhotoPath" alt="Member Photo" style="max-width:250px; border:1px solid #ddd; border-radius:6px;" />
+    }
+</div>
