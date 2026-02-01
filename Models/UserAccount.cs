@@ -48,5 +48,7 @@ namespace FreshFarmMarketSecurity.Models
         public string? CurrentSessionToken { get; set; }
 
         public DateTimeOffset? CurrentSessionIssuedAt { get; set; }
+
+        public DateTimeOffset? LastPasswordChangedAt { get; set; }
     }
 }

@@ -9,6 +9,9 @@ namespace FreshFarmMarketSecurity.Data
             : base(options) { }
 
         public DbSet<UserAccount> UserAccounts => Set<UserAccount>();
+
+        public DbSet<PasswordHistory> PasswordHistories { get; set; }
+
         public DbSet<AuditLog> AuditLogs => Set<AuditLog>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
