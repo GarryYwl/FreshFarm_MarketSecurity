@@ -101,7 +101,7 @@ namespace FreshFarmMarketSecurity.Pages.Account
             {
                 if (_pwd.Verify(oldHash, Input.NewPassword))
                 {
-                    // ✅ Put error on ModelState so it shows up in validation summary
+                    // Put error on ModelState so it shows up in validation summary
                     ModelState.AddModelError(string.Empty, "You cannot reuse your recent passwords.");
                     await AddAuditAsync(user.Email, "CHANGE_PASSWORD_FAIL_REUSE");
                     await _db.SaveChangesAsync();
@@ -126,7 +126,9 @@ namespace FreshFarmMarketSecurity.Pages.Account
             Message = "Password changed successfully.";
             ModelState.Clear();
             Input = new ChangePasswordInput();
-            return Page();
+            HttpContext.Session.Remove("ForcePasswordChange");
+            TempData["Success"] = "Password updated successfully.";
+            return RedirectToPage("/Home/Index");
         }
 
         private async Task AddAuditAsync(string email, string action)

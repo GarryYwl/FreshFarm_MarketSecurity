@@ -4,6 +4,11 @@
     ViewData["Title"] = "Home";
 }
 
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
 <h2>Fresh Farm Market - Member Profile</h2>
 
 <div style="margin-top: 16px;">
@@ -13,7 +18,7 @@
     <p><b>Mobile No:</b> @Model.MobileNo</p>
     <p><b>Delivery Address:</b> @Model.DeliveryAddress</p>
 
-    <p><b>Credit Card (Decrypted):</b> @Model.DecryptedCreditCard</p>
+    <p><b>Credit Card (Decrypted):</b> **** **** **** @Model.DecryptedCreditCard[^4..]</p>
 
     <p><b>About Me:</b></p>
     <div style="border:1px solid #ddd; padding:10px; border-radius:6px;">

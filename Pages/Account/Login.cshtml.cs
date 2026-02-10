@@ -1,4 +1,4 @@
-using FreshFarmMarketSecurity.Data;
+﻿using FreshFarmMarketSecurity.Data;
 using FreshFarmMarketSecurity.Models;
 using FreshFarmMarketSecurity.Services;
 using FreshFarmMarketSecurity.ViewModels;
@@ -116,7 +116,24 @@ namespace FreshFarmMarketSecurity.Pages.Account
 
             await _db.SaveChangesAsync();
 
+            // Max password age check (before redirect)
+            int maxAgeDays = _config.GetValue<int>("Security:MaxPasswordAgeDays", 90);
+
+            var lastChanged = user.LastPasswordChangedAt ?? DateTimeOffset.MinValue;
+            bool isExpired = (DateTimeOffset.UtcNow - lastChanged) > TimeSpan.FromDays(maxAgeDays);
+
+            if (isExpired)
+            {
+                // allow login session but force password change first
+                HttpContext.Session.SetString("ForcePasswordChange", "1");
+                TempData["Info"] = $"Your password is older than {maxAgeDays} days. Please change it to continue.";
+                return RedirectToPage("/Account/ChangePassword");
+            }
+
+            // Normal flow
             return RedirectToPage("/Home/Index");
+
+
         }
 
         private async Task AddAuditAsync(string email, string action)

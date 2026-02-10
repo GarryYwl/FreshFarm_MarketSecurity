@@ -1,4 +1,4 @@
-using FreshFarmMarketSecurity.Data;
+﻿using FreshFarmMarketSecurity.Data;
 using FreshFarmMarketSecurity.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -39,9 +39,14 @@ namespace FreshFarmMarketSecurity.Pages.Home
             var user = await _db.UserAccounts.SingleOrDefaultAsync(u => u.Email == email);
             if (user is null || user.CurrentSessionToken != token)
             {
-                // Multiple login detected OR session invalid
                 HttpContext.Session.Clear();
                 return RedirectToPage("/Account/Login");
+            }
+
+            // Now enforce forced password change
+            if (HttpContext.Session.GetString("ForcePasswordChange") == "1")
+            {
+                return RedirectToPage("/Account/ChangePassword");
             }
 
             // Populate view data
