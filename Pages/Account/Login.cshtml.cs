@@ -12,6 +12,9 @@ namespace FreshFarmMarketSecurity.Pages.Account
     {
         private readonly FreshFarmDbContext _db;
         private readonly PasswordService _pwd;
+        private readonly EmailService _email;
+        private readonly TokenHashService _tokenHash;
+
 
         // Tweak these constants if you want
         private const int MaxAttempts = 3;
@@ -19,15 +22,23 @@ namespace FreshFarmMarketSecurity.Pages.Account
         private readonly ReCaptchaService _captcha;
         private readonly IConfiguration _config;
 
-        public LoginModel(FreshFarmDbContext db, PasswordService pwd, ReCaptchaService captcha, IConfiguration config)
+        public LoginModel(
+            FreshFarmDbContext db,
+            PasswordService pwd,
+            ReCaptchaService captcha,
+            IConfiguration config,
+            EmailService email,
+            TokenHashService tokenHash)
         {
             _db = db;
             _pwd = pwd;
             _captcha = captcha;
             _config = config;
+            _email = email;
+            _tokenHash = tokenHash;
+
             ReCaptchaSiteKey = _config["GoogleReCaptcha:SiteKey"] ?? "";
         }
-
 
 
         [BindProperty]
@@ -98,42 +109,30 @@ namespace FreshFarmMarketSecurity.Pages.Account
                 return Page();
             }
 
-            // Successful login: clear lockout + reset attempts
+            // Successful password: clear lockout + reset attempts
             user.FailedLoginAttempts = 0;
             user.LockoutEnd = null;
 
-            // Create a fresh session token and store in DB for multi-login detection
-            var sessionToken = Guid.NewGuid().ToString("N");
-            user.CurrentSessionToken = sessionToken;
-            user.CurrentSessionIssuedAt = DateTimeOffset.UtcNow;
+            // 2FA email OTP
+            var otp = new Random().Next(100000, 999999).ToString();
+            var otpHash = _tokenHash.Hash(otp);
 
-            // Save session
-            HttpContext.Session.SetString("AuthEmail", user.Email);
-            HttpContext.Session.SetString("AuthToken", sessionToken);
-            HttpContext.Session.SetInt32("AuthUserId", user.Id);
+            user.TwoFactorOtpHash = otpHash;
+            user.TwoFactorOtpExpiresAt = DateTimeOffset.UtcNow.AddMinutes(5);
+            user.TwoFactorOtpAttempts = 0;
 
-            await AddAuditAsync(user.Email, "LOGIN_SUCCESS");
+            // Pending session (not fully logged in)
+            HttpContext.Session.SetInt32("Pending2FAUserId", user.Id);
 
+            _db.AuditLogs.Add(new AuditLog { Email = user.Email, Action = "2FA_OTP_SENT" });
             await _db.SaveChangesAsync();
 
-            // Max password age check (before redirect)
-            int maxAgeDays = _config.GetValue<int>("Security:MaxPasswordAgeDays", 90);
+            await _email.SendAsync(
+                user.Email,
+                "Fresh Farm Market - Your OTP",
+                $"Your OTP is: {otp}\nIt expires in 5 minutes.");
 
-            var lastChanged = user.LastPasswordChangedAt ?? DateTimeOffset.MinValue;
-            bool isExpired = (DateTimeOffset.UtcNow - lastChanged) > TimeSpan.FromDays(maxAgeDays);
-
-            if (isExpired)
-            {
-                // allow login session but force password change first
-                HttpContext.Session.SetString("ForcePasswordChange", "1");
-                TempData["Info"] = $"Your password is older than {maxAgeDays} days. Please change it to continue.";
-                return RedirectToPage("/Account/ChangePassword");
-            }
-
-            // Normal flow
-            return RedirectToPage("/Home/Index");
-
-
+            return RedirectToPage("/Account/VerifyOtp");
         }
 
         private async Task AddAuditAsync(string email, string action)

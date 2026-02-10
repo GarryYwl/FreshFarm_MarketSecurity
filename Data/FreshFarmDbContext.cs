@@ -10,6 +10,8 @@ namespace FreshFarmMarketSecurity.Data
 
         public DbSet<UserAccount> UserAccounts => Set<UserAccount>();
 
+        public DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
+
         public DbSet<PasswordHistory> PasswordHistories { get; set; }
 
         public DbSet<AuditLog> AuditLogs => Set<AuditLog>();

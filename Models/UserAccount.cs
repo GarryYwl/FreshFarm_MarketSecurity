@@ -50,5 +50,11 @@ namespace FreshFarmMarketSecurity.Models
         public DateTimeOffset? CurrentSessionIssuedAt { get; set; }
 
         public DateTimeOffset? LastPasswordChangedAt { get; set; }
+
+        public string? TwoFactorOtpHash { get; set; }
+        
+        public DateTimeOffset? TwoFactorOtpExpiresAt { get; set; }
+        
+        public int TwoFactorOtpAttempts { get; set; }
     }
 }

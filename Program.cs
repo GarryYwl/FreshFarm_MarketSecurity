@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
+builder.Services.AddScoped<EmailService>();
+builder.Services.AddSingleton<TokenHashService>();
 
 // EF Core + SQL Server
 builder.Services.AddDbContext<FreshFarmDbContext>(options =>
