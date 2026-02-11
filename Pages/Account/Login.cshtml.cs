@@ -18,7 +18,7 @@ namespace FreshFarmMarketSecurity.Pages.Account
 
         // Tweak these constants if you want
         private const int MaxAttempts = 3;
-        private static readonly TimeSpan LockoutDuration = TimeSpan.FromMinutes(5);
+        private static readonly TimeSpan LockoutDuration = TimeSpan.FromMinutes(1);
         private readonly ReCaptchaService _captcha;
         private readonly IConfiguration _config;
 

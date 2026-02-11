@@ -16,7 +16,7 @@ builder.Services.AddDbContext<FreshFarmDbContext>(options =>
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(15);
+    options.IdleTimeout = TimeSpan.FromMinutes(1);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
@@ -32,7 +32,7 @@ builder.Services.AddScoped<ReCaptchaService>();
 
 var app = builder.Build();
 
-// ✅ Exception handling (500)
+// Exception handling (500)
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Errors/Error"); // our custom 500 page

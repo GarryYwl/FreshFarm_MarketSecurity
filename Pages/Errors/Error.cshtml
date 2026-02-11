@@ -3,9 +3,9 @@
     ViewData["Title"] = "Error";
 }
 
-<h2>Something went wrong</h2>
-<p>An unexpected error occurred. Please try again later.</p>
-
-<p>
-    <a asp-page="/Index">Go back Home</a>
-</p>
+<div class="error-page">
+    <div class="error-code">!</div>
+<h2>Something Went Wrong</h2>
+    <p>An unexpected error occurred. Please try again later.</p>
+    <a asp-page="/Index" class="btn btn-primary">Go back Home</a>
+</div>

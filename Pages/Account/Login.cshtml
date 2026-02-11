@@ -4,55 +4,64 @@
     ViewData["Title"] = "Login";
 }
 
-<h2>Login</h2>
+<div class="auth-card">
+    <h2>Welcome Back</h2>
+  <p class="auth-subtitle">Sign in to your account</p>
 
-<form method="post">
-    <div>
-        <label asp-for="Input.Email"></label>
-        <input asp-for="Input.Email" />
-        <span asp-validation-for="Input.Email"></span>
+    <form method="post">
+        <div class="mb-3">
+        <label asp-for="Input.Email" class="form-label"></label>
+         <input asp-for="Input.Email" class="form-control" placeholder="email@example.com" />
+    <span asp-validation-for="Input.Email" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Input.Password" class="form-label"></label>
+            <input asp-for="Input.Password" class="form-control" placeholder="Enter your password" />
+            <span asp-validation-for="Input.Password" class="text-danger"></span>
+     </div>
+
+      @if (!string.IsNullOrEmpty(Model.Message))
+     {
+   <div class="alert alert-danger">@Model.Message</div>
+        }
+
+        <div class="d-grid mt-4">
+    <button type="submit" class="btn btn-primary btn-lg">Sign In</button>
+        </div>
+
+        <div class="text-center mt-3">
+ <a asp-page="/Account/ForgotPassword" class="text-muted" style="font-size: 0.9rem;">Forgot password?</a>
+  </div>
+
+        <input type="hidden" id="RecaptchaToken" name="RecaptchaToken" />
+    </form>
+
+    <div class="auth-link">
+        Don't have an account? <a asp-page="/Account/Register">Register here</a>
     </div>
-
-    <div>
-        <label asp-for="Input.Password"></label>
-        <input asp-for="Input.Password" />
-        <span asp-validation-for="Input.Password"></span>
-    </div>
-
-    @if (!string.IsNullOrEmpty(Model.Message))
-    {
-        <p>@Model.Message</p>
-    }
-
-    <button type="submit">Login</button>
-
-    <div class="mt-3">
-        <a asp-page="/Account/ForgotPassword">Forgot password?</a>
-    </div>
-
-    <input type="hidden" id="RecaptchaToken" name="RecaptchaToken" />
-</form>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 
-        <<script src="https://www.google.com/recaptcha/api.js?render=@Model.ReCaptchaSiteKey"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=@Model.ReCaptchaSiteKey"></script>
 
     <script>
         (function () {
-            const form = document.querySelector("form");
-            if (!form) return;
+         const form = document.querySelector("form");
+         if (!form) return;
 
             form.addEventListener("submit", function (e) {
-                e.preventDefault();
+   e.preventDefault();
 
-                grecaptcha.ready(function () {
-                    grecaptcha.execute("@Model.ReCaptchaSiteKey", { action: "login" })
-                        .then(function (token) {
-                            document.getElementById("RecaptchaToken").value = token;
-                            form.submit();
-                        });
-                });
+  grecaptcha.ready(function () {
+       grecaptcha.execute("@Model.ReCaptchaSiteKey", { action: "login" })
+     .then(function (token) {
+  document.getElementById("RecaptchaToken").value = token;
+  form.submit();
+            });
+         });
             });
         })();
     </script>

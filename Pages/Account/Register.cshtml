@@ -4,105 +4,114 @@
     ViewData["Title"] = "Register";
 }
 
-<h2>Register</h2>
+<div class="auth-card" style="max-width: 600px;">
+  <h2>Create Account</h2>
+    <p class="auth-subtitle">Join Fresh Farm Market today</p>
 
-<form method="post" enctype="multipart/form-data" >
-    <div>
-        <label asp-for="Input.FullName"></label>
-        <input asp-for="Input.FullName" />
-        <span asp-validation-for="Input.FullName"></span>
+    <form method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+            <label asp-for="Input.FullName" class="form-label"></label>
+            <input asp-for="Input.FullName" class="form-control" placeholder="Enter your full name" />
+        <span asp-validation-for="Input.FullName" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Input.CreditCardNo" class="form-label"></label>
+            <input asp-for="Input.CreditCardNo" class="form-control" placeholder="Card number" />
+            <span asp-validation-for="Input.CreditCardNo" class="text-danger"></span>
+        </div>
+
+   <div class="mb-3">
+    <label asp-for="Input.Gender" class="form-label"></label>
+      <select asp-for="Input.Gender" class="form-select">
+     <option value="">-- Select --</option>
+        <option>Male</option>
+      <option>Female</option>
+           <option>Prefer not to say</option>
+            </select>
+        <span asp-validation-for="Input.Gender" class="text-danger"></span>
+      </div>
+
+        <div class="mb-3">
+    <label asp-for="Input.MobileNo" class="form-label"></label>
+            <input asp-for="Input.MobileNo" class="form-control" placeholder="Mobile number" />
+    <span asp-validation-for="Input.MobileNo" class="text-danger"></span>
+     </div>
+
+        <div class="mb-3">
+            <label asp-for="Input.DeliveryAddress" class="form-label"></label>
+            <input asp-for="Input.DeliveryAddress" class="form-control" placeholder="Delivery address" />
+  <span asp-validation-for="Input.DeliveryAddress" class="text-danger"></span>
     </div>
 
-    <div>
-        <label asp-for="Input.CreditCardNo"></label>
-        <input asp-for="Input.CreditCardNo" />
-        <span asp-validation-for="Input.CreditCardNo"></span>
-    </div>
+  <div class="mb-3">
+          <label asp-for="Input.Email" class="form-label"></label>
+      <input asp-for="Input.Email" class="form-control" placeholder="email@example.com" />
+<span asp-validation-for="Input.Email" class="text-danger"></span>
+  </div>
 
-    <div>
-        <label asp-for="Input.Gender"></label>
-        <select asp-for="Input.Gender">
-            <option value="">-- Select --</option>
-            <option>Male</option>
-            <option>Female</option>
-            <option>Prefer not to say</option>
-        </select>
-        <span asp-validation-for="Input.Gender"></span>
-    </div>
+        <div class="mb-3">
+ <label asp-for="Input.Password" class="form-label"></label>
+          <input asp-for="Input.Password" class="form-control" placeholder="Create a strong password" />
+   <span asp-validation-for="Input.Password" class="text-danger"></span>
+   </div>
 
-    <div>
-        <label asp-for="Input.MobileNo"></label>
-        <input asp-for="Input.MobileNo" />
-        <span asp-validation-for="Input.MobileNo"></span>
-    </div>
+        <div class="mb-3">
+     <label asp-for="Input.ConfirmPassword" class="form-label"></label>
+      <input asp-for="Input.ConfirmPassword" class="form-control" placeholder="Re-enter your password" />
+   <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+      </div>
 
-    <div>
-        <label asp-for="Input.DeliveryAddress"></label>
-        <input asp-for="Input.DeliveryAddress" />
-        <span asp-validation-for="Input.DeliveryAddress"></span>
-    </div>
+        @if (!string.IsNullOrEmpty(Model.PasswordFeedback))
+  {
+       <div class="alert alert-warning">@Model.PasswordFeedback</div>
+        }
 
-    <div>
-        <label asp-for="Input.Email"></label>
-        <input asp-for="Input.Email" />
-        <span asp-validation-for="Input.Email"></span>
-    </div>
+        <div class="mb-3">
+       <label asp-for="Input.Photo" class="form-label"></label>
+         <input asp-for="Input.Photo" type="file" accept=".jpg,.jpeg" class="form-control" />
+            <span asp-validation-for="Input.Photo" class="text-danger"></span>
+        </div>
 
-    <div>
-        <label asp-for="Input.Password"></label>
-        <input asp-for="Input.Password" />
-        <span asp-validation-for="Input.Password"></span>
-    </div>
+    <div class="mb-3">
+            <label asp-for="Input.AboutMe" class="form-label"></label>
+            <textarea asp-for="Input.AboutMe" class="form-control" rows="3" placeholder="Tell us about yourself..."></textarea>
+   <span asp-validation-for="Input.AboutMe" class="text-danger"></span>
+        </div>
 
-    <div>
-        <label asp-for="Input.ConfirmPassword"></label>
-        <input asp-for="Input.ConfirmPassword" />
-        <span asp-validation-for="Input.ConfirmPassword"></span>
-    </div>
+        <div class="d-grid mt-4">
+    <button type="submit" class="btn btn-primary btn-lg">Create Account</button>
+        </div>
 
-    @if (!string.IsNullOrEmpty(Model.PasswordFeedback))
-    {
-        <p>@Model.PasswordFeedback</p>
-    }
+        <input type="hidden" id="RecaptchaToken" name="RecaptchaToken" />
+    </form>
 
-    <div>
-        <label asp-for="Input.Photo"></label>
-        <input asp-for="Input.Photo" type="file" accept=".jpg,.jpeg" />
-        <span asp-validation-for="Input.Photo"></span>
-    </div>
-
-    <div>
-        <label asp-for="Input.AboutMe"></label>
-        <textarea asp-for="Input.AboutMe"></textarea>
-        <span asp-validation-for="Input.AboutMe"></span>
-    </div>
-
-    <button type="submit">Register</button>
-
-    <input type="hidden" id="RecaptchaToken" name="RecaptchaToken" />
-</form>
+<div class="auth-link">
+        Already have an account? <a asp-page="/Account/Login">Sign in</a>
+ </div>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 
     <script src="https://www.google.com/recaptcha/api.js?render=@Model.ReCaptchaSiteKey"></script>
 
-    <script>
+ <script>
         (function () {
             const form = document.querySelector("form");
-            if (!form) return;
+         if (!form) return;
 
             form.addEventListener("submit", function (e) {
-                e.preventDefault();
+   e.preventDefault();
 
-                grecaptcha.ready(function () {
-                     grecaptcha.execute("@Model.ReCaptchaSiteKey", { action: "register" })                        
-                     .then(function (token) {
-                            document.getElementById("RecaptchaToken").value = token;
-                            form.submit();
-                        });
-                });
-            });
-        })();
+      grecaptcha.ready(function () {
+      grecaptcha.execute("@Model.ReCaptchaSiteKey", { action: "register" })
+          .then(function (token) {
+     document.getElementById("RecaptchaToken").value = token;
+       form.submit();
+    });
+     });
+    });
+   })();
     </script>
 }

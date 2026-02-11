@@ -4,24 +4,30 @@
     ViewData["Title"] = "Verify OTP";
 }
 
-<h2>Verify OTP</h2>
+<div class="auth-card" style="max-width: 420px;">
+    <h2>Verify OTP</h2>
+    <p class="auth-subtitle">Enter the one-time code sent to your email</p>
 
-@if (TempData["Info"] != null)
-{
-    <div class="alert alert-info">@TempData["Info"]</div>
-}
+    @if (TempData["Info"] != null)
+    {
+        <div class="alert alert-info">@TempData["Info"]</div>
+    }
 
-<form method="post">
-    <div class="mb-3">
-        <label asp-for="Otp" class="form-label"></label>
-        <input asp-for="Otp" class="form-control" />
-        <span asp-validation-for="Otp" class="text-danger"></span>
-    </div>
+    <form method="post">
+        <div class="mb-3">
+            <label asp-for="Otp" class="form-label"></label>
+            <input asp-for="Otp" class="form-control text-center"
+                style="font-size: 1.25rem; letter-spacing: 0.5rem; font-weight: 600;" placeholder="------" />
+            <span asp-validation-for="Otp" class="text-danger"></span>
+        </div>
 
-    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-    <button type="submit" class="btn btn-primary">Verify</button>
-</form>
+        <div class="d-grid mt-4">
+            <button type="submit" class="btn btn-primary btn-lg">Verify</button>
+        </div>
+    </form>
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

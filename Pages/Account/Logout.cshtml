@@ -1,11 +1,17 @@
 ﻿@page
 @model FreshFarmMarketSecurity.Pages.Account.LogoutModel
 
-<form method="post">
-    <button type="submit">Logout</button>
-</form>
+<div class="auth-card" style="max-width: 420px;">
+    <h2>Logout</h2>
+    <p class="auth-subtitle">Are you sure you want to sign out?</p>
 
-<p>
-    Don't have an account?
-    <a asp-page="/Account/Register">Register here</a>
-</p>
+    <form method="post">
+     <div class="d-grid">
+     <button type="submit" class="btn btn-primary btn-lg">Logout</button>
+</div>
+    </form>
+
+    <div class="auth-link">
+        Don't have an account? <a asp-page="/Account/Register">Register here</a>
+    </div>
+</div>

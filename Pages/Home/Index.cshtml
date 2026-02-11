@@ -9,25 +9,47 @@
     <div class="alert alert-success">@TempData["Success"]</div>
 }
 
-<h2>Fresh Farm Market - Member Profile</h2>
+<h2 class="mb-1">🌿 Member Profile</h2>
+<p class="text-muted mb-0">Welcome to Fresh Farm Market</p>
 
-<div style="margin-top: 16px;">
-    <p><b>Full Name:</b> @Model.FullName</p>
-    <p><b>Email:</b> @Model.Email</p>
-    <p><b>Gender:</b> @Model.Gender</p>
-    <p><b>Mobile No:</b> @Model.MobileNo</p>
-    <p><b>Delivery Address:</b> @Model.DeliveryAddress</p>
-
-    <p><b>Credit Card (Decrypted):</b> **** **** **** @Model.DecryptedCreditCard[^4..]</p>
-
-    <p><b>About Me:</b></p>
-    <div style="border:1px solid #ddd; padding:10px; border-radius:6px;">
-        @Model.AboutMe
+<div class="profile-card">
+    <div class="profile-row">
+        <span class="profile-label">Full Name</span>
+        <span class="profile-value">@Model.FullName</span>
+    </div>
+    <div class="profile-row">
+        <span class="profile-label">Email</span>
+        <span class="profile-value">@Model.Email</span>
+    </div>
+    <div class="profile-row">
+        <span class="profile-label">Gender</span>
+        <span class="profile-value">@Model.Gender</span>
+    </div>
+    <div class="profile-row">
+        <span class="profile-label">Mobile No</span>
+        <span class="profile-value">@Model.MobileNo</span>
+    </div>
+    <div class="profile-row">
+        <span class="profile-label">Delivery Address</span>
+        <span class="profile-value">@Model.DeliveryAddress</span>
+    </div>
+    <div class="profile-row">
+        <span class="profile-label">Credit Card</span>
+        <span class="profile-value">**** **** **** @Model.DecryptedCreditCard[^4..]</span>
     </div>
 
-    <p style="margin-top: 16px;"><b>Photo:</b></p>
+    <div class="mt-4">
+        <span class="profile-label d-block mb-2">About Me</span>
+        <div class="about-box">
+            @Model.AboutMe
+        </div>
+    </div>
+
     @if (!string.IsNullOrEmpty(Model.PhotoPath))
     {
-        <img src="@Model.PhotoPath" alt="Member Photo" style="max-width:250px; border:1px solid #ddd; border-radius:6px;" />
+        <div class="mt-4">
+            <span class="profile-label d-block mb-2">Photo</span>
+            <img src="@Model.PhotoPath" alt="Member Photo" class="profile-photo" />
+        </div>
     }
 </div>
